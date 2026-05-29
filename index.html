@@ -3,10 +3,907 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>西条農業高校（西農）| 農業×情報テクノロジーで未来を創るスマート農業高校</title>
+    
+    <!-- Google Fonts: 読みやすさとモダンさを両立するフォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js (インタラクティブな状態管理用) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Lucide Icons (モダンなSVGアイコンライブラリ) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind カスタム設定 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            green: '#10B981',   /* 農業・自然 */
+                            blue: '#0EA5E9',    /* うちぬき・IT */
+                            dark: '#0F172A',    /* スタイリッシュな紺 */
+                            accent: '#F59E0B'   /* 輝く未来・オレンジ */
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* グラデーションテキストやカスタムデコレーション */
+        .gradient-text {
+            background: linear-gradient(135deg, #10B981 0%, #0EA5E9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #10B981 0%, #0EA5E9 100%);
+        }
+        .gradient-bg-dark {
+            background: linear-gradient(135deg, #064E3B 0%, #0B525F 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .glass-card-dark {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body>
-    <h2>西条農業高校</h2>
-    <p>楽しい学校生活</p>
+<body class="font-sans text-slate-800 bg-slate-50 overflow-x-hidden antialiased" x-data="{ currentTab: 'it', openModal: false, formSubmitted: false }">
+
+    <!-- ヘッダーナビゲーション -->
+    <header class="sticky top-0 z-40 w-full glass-card border-b border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <!-- ロゴ -->
+            <a href="#" class="flex items-center space-x-2 sm:space-x-3">
+                <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white shadow-lg shadow-brand-green/20">
+                    <i data-lucide="sprout" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-bold tracking-widest text-slate-500 block">愛媛県立西条農業高等学校</span>
+                    <span class="text-lg sm:text-xl font-black text-slate-800 tracking-tight">西農 <span class="gradient-text">SAINO</span></span>
+                </div>
+            </a>
+
+            <!-- ナビゲーションメニュー (デスクトップ) -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+                <a href="#vision" class="hover:text-brand-green transition-colors">西農のビジョン</a>
+                <a href="#compare" class="hover:text-brand-green transition-colors">スマート農業とは</a>
+                <a href="#strengths" class="hover:text-brand-green transition-colors">3つの特色</a>
+                <a href="#diagnostic" class="hover:text-brand-green transition-colors">適性診断</a>
+                <a href="#curriculum" class="hover:text-brand-green transition-colors">カリキュラム</a>
+            </nav>
+
+            <!-- CTAボタン (ヘッダー) -->
+            <div class="flex items-center space-x-3">
+                <a href="#cta" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-bold text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                    <i data-lucide="calendar" class="w-4 h-4 mr-2"></i>
+                    オープンキャンパス
+                </a>
+                <!-- スマホ用メニューボタン -->
+                <button @click="$dispatch('open-menu')" class="md:hidden p-2 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200" aria-label="メニューを開く">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- スマホ用スライドインメニュー -->
+    <div x-data="{ isOpen: false }" 
+         @open-menu.window="isOpen = true" 
+         @keydown.escape.window="isOpen = false"
+         class="relative z-50 md:hidden" 
+         x-show="isOpen" 
+         x-cloak>
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" @click="isOpen = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
+        
+        <div class="fixed inset-y-0 right-0 max-w-xs w-full bg-white shadow-2xl p-6 flex flex-col justify-between"
+             x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full">
+            <div>
+                <div class="flex items-center justify-between pb-6 border-b border-slate-100">
+                    <span class="font-bold text-slate-800">メニュー</span>
+                    <button @click="isOpen = false" class="p-1 rounded-full hover:bg-slate-100">
+                        <i data-lucide="x" class="w-6 h-6 text-slate-600"></i>
+                    </button>
+                </div>
+                <div class="mt-8 space-y-6 text-base font-bold text-slate-800">
+                    <a href="#vision" @click="isOpen = false" class="block hover:text-brand-green">西農のビジョン</a>
+                    <a href="#compare" @click="isOpen = false" class="block hover:text-brand-green">スマート農業とは</a>
+                    <a href="#strengths" @click="isOpen = false" class="block hover:text-brand-green">3つの特色</a>
+                    <a href="#diagnostic" @click="isOpen = false" class="block hover:text-brand-green">適性診断</a>
+                    <a href="#curriculum" @click="isOpen = false" class="block hover:text-brand-green">カリキュラム</a>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-slate-100 space-y-3">
+                <a href="#cta" @click="isOpen = false" class="w-full inline-flex items-center justify-center py-3 rounded-xl gradient-bg text-white font-bold text-center">
+                    <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i>
+                    オープンキャンパス申込
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. ヒーローセクション -->
+    <section id="vision" class="relative pt-10 pb-20 sm:pb-28 lg:pt-16 lg:pb-32 overflow-hidden bg-slate-900 text-white">
+        <!-- 背景の輝きデコレーション -->
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-green/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-brand-blue/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                
+                <!-- テキストブロック -->
+                <div class="lg:col-span-7 space-y-6 sm:space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/30 px-4 py-1.5 rounded-full text-brand-green text-xs sm:text-sm font-semibold">
+                        <span class="flex h-2 w-2 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-green"></span>
+                        </span>
+                        <span>新時代アグリテック・ハイスクール</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight sm:leading-none tracking-tight">
+                        土をいじる、<br class="sm:hidden">コードを書く。<br>
+                        僕らの農業は、<br class="sm:hidden">
+                        <span class="gradient-text drop-shadow-sm">スマートに進化した。</span>
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        西条の豊かな大自然と「名水うちぬき」を舞台に、IoTデバイスやAIを駆使して食の未来をデザインする。西条農業高校（西農）で、最新の「スマート農業」を体験しよう！
+                    </p>
+
+                    <!-- ボタングループ -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#cta" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl gradient-bg text-white font-bold text-base hover:shadow-lg hover:shadow-brand-green/30 hover:-translate-y-0.5 transition-all">
+                            体験イベントに申し込む
+                            <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                        </a>
+                        <a href="#compare" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl border border-slate-700 hover:border-slate-500 text-slate-200 hover:text-white font-bold text-base transition-all">
+                            スマート農業って？
+                        </a>
+                    </div>
+
+                    <!-- ターゲットメリットのバッジ -->
+                    <div class="pt-4 border-t border-slate-800/80 flex flex-wrap justify-center lg:justify-start gap-y-3 gap-x-6 text-xs sm:text-sm text-slate-400">
+                        <span class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-brand-green mr-1.5"></i>プログラミング＆電子工作も学べる</span>
+                        <span class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-brand-green mr-1.5"></i>国公立大進学＆優良企業就職も強い</span>
+                        <span class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 text-brand-green mr-1.5"></i>愛媛・西条の地域を担うイノベーターへ</span>
+                    </div>
+                </div>
+
+                <!-- ビジュアルボード（3D/グラフィック表現） -->
+                <div class="lg:col-span-5 relative">
+                    <!-- アニメーションをあしらったモックアップ/イラスト -->
+                    <div class="relative mx-auto max-w-[360px] sm:max-w-[420px] aspect-square rounded-3xl gradient-bg p-1 shadow-2xl shadow-brand-blue/30 animate-float">
+                        <div class="w-full h-full bg-slate-950 rounded-[22px] p-6 flex flex-col justify-between overflow-hidden relative">
+                            <!-- グリッドメッシュ -->
+                            <div class="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] opacity-10"></div>
+                            
+                            <!-- シミュレータ風ヘッダー -->
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3 relative z-10">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                                </div>
+                                <span class="text-[10px] text-slate-500 tracking-wider font-mono">SAINO_SMART_MONITOR v2.6</span>
+                            </div>
+
+                            <!-- ダッシュボード風画面 -->
+                            <div class="space-y-4 my-auto relative z-10">
+                                <!-- 水分センサー＆水耕栽培ステータス -->
+                                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-xl space-y-2">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-slate-400 font-medium">土壌水分（西農ハウスNo.3）</span>
+                                        <span class="text-xs text-brand-green font-bold font-mono">最適 (68%)</span>
+                                    </div>
+                                    <!-- プログレスバー -->
+                                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-brand-green h-full rounded-full" style="width: 68%"></div>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500">※Raspberry Pi型土壌センサーがリアルタイム分析中</p>
+                                </div>
+
+                                <!-- 生成AIレコメンド -->
+                                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-xl space-y-1">
+                                    <div class="flex items-center space-x-1.5">
+                                        <div class="w-4 h-4 rounded gradient-bg flex items-center justify-center">
+                                            <i data-lucide="cpu" class="w-3 h-3 text-white"></i>
+                                        </div>
+                                        <span class="text-xs font-bold text-slate-300">西農AIアシスタントの分析</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 leading-relaxed font-mono">
+                                        「名水うちぬきの水温が最適化されました。トマトの糖度が1.2%向上する見込みです。明日のドローン散布は午前8時が推奨されます。」
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- ステータスバー -->
+                            <div class="flex items-center justify-between border-t border-slate-800 pt-3 relative z-10">
+                                <div class="flex items-center space-x-1.5 text-[11px] text-slate-400">
+                                    <i data-lucide="wifi" class="w-3.5 h-3.5 text-brand-blue"></i>
+                                    <span>IoT Sensor Active</span>
+                                </div>
+                                <span class="text-[11px] text-slate-500 font-mono">Ehime - Saijo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 装飾用のアブストラクトバブル -->
+                    <div class="absolute -bottom-6 -left-6 bg-slate-800 border border-slate-700 p-3 rounded-2xl flex items-center space-x-3 shadow-xl">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-brand-green">
+                            <i data-lucide="droplet" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">西条名水</p>
+                            <p class="text-xs font-bold text-white">「うちぬき」水耕管理</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 課題・共感セクション -->
+    <section id="compare" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center space-y-4 mb-16">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-brand-green bg-emerald-50/100 border border-emerald-100 px-3 py-1 rounded-full">イメージをアップデートしよう！</span>
+                <h2 class="text-2xl sm:text-4xl font-black text-slate-900 leading-tight">
+                    農業って「きつい」「泥臭い」？<br class="sm:hidden">
+                    <span class="gradient-text">西農なら、その常識が変わる。</span>
+                </h2>
+                <p class="text-sm sm:text-base text-slate-500">
+                    昔ながらの経験頼みの農業から、データとITで自動化・最適化するスマート農業へ。西農では最新技術を駆使して、スマートにクリエイティブに学びます。
+                </p>
+            </div>
+
+            <!-- 比較カード -->
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- 昔の農業イメージ -->
+                <div class="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-slate-200 text-slate-600 font-bold text-xs px-4 py-1.5 rounded-bl-xl uppercase tracking-wider">従来のイメージ</div>
+                    <div class="w-12 h-12 rounded-xl bg-slate-200 flex items-center justify-center text-slate-500 mb-6">
+                        <i data-lucide="thermometer-sun" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">きつくて、勘と経験がすべて？</h3>
+                    <ul class="space-y-3.5 text-sm sm:text-base text-slate-600">
+                        <li class="flex items-start">
+                            <i data-lucide="x" class="w-5 h-5 text-red-500 mr-2 shrink-0 mt-0.5"></i>
+                            <span>猛暑や極寒のビニールハウスでの長時間の見回り。</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="x" class="w-5 h-5 text-red-500 mr-2 shrink-0 mt-0.5"></i>
+                            <span>「長年の経験」がないと、美味しい作物は作れない。</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="x" class="w-5 h-5 text-red-500 mr-2 shrink-0 mt-0.5"></i>
+                            <span>体力頼みの手作業が多く、身体への負担が大きい。</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 西農のスマート農業 -->
+                <div class="gradient-bg-dark text-white rounded-2xl p-6 sm:p-8 relative overflow-hidden shadow-xl shadow-brand-green/10">
+                    <div class="absolute top-0 right-0 bg-brand-green text-white font-bold text-xs px-4 py-1.5 rounded-bl-xl uppercase tracking-wider">西農のスマート農業</div>
+                    <div class="w-12 h-12 rounded-xl bg-brand-green flex items-center justify-center text-white mb-6 shadow-md shadow-brand-green/30">
+                        <i data-lucide="cpu" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4 text-emerald-300">データと自動化で、超効率化！</h3>
+                    <ul class="space-y-3.5 text-sm sm:text-base text-slate-100">
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-green mr-2 shrink-0 mt-0.5 bg-emerald-500/20 rounded-full p-0.5"></i>
+                            <span>IoTデバイスが温度や水分を自動監視、自動で散水。</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-green mr-2 shrink-0 mt-0.5 bg-emerald-500/20 rounded-full p-0.5"></i>
+                            <span>生成AIや過去データを分析し、誰でも最高の品質を狙える。</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-green mr-2 shrink-0 mt-0.5 bg-emerald-500/20 rounded-full p-0.5"></i>
+                            <span>ドローン散布や自動運転ロボットなど、最先端ガジェットを活用。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 学校の強み・特色 -->
+    <section id="strengths" class="py-20 bg-slate-50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center space-y-4 mb-16">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-brand-blue bg-sky-50 border border-sky-100 px-3 py-1 rounded-full">西農を選ぶべき理由</span>
+                <h2 class="text-2xl sm:text-4xl font-black text-slate-900">未来のスキルを身につける3つの特色</h2>
+                <p class="text-sm sm:text-base text-slate-500">農業の知識だけじゃない。プログラミング、IoT工作、そして地域資源の保全。多様な未来へはばたくカリキュラムがここにあります。</p>
+            </div>
+
+            <!-- 強み3選カード -->
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 特色1 -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
+                    <div class="w-14 h-14 rounded-2xl gradient-bg text-white flex items-center justify-center mb-6 shadow-md shadow-brand-green/20">
+                        <i data-lucide="binary" class="w-7 h-7"></i>
+                    </div>
+                    <span class="text-xs font-bold text-brand-blue tracking-wide uppercase">Agriculture × IoT</span>
+                    <h3 class="text-xl font-bold text-slate-900 mt-2 mb-3">農業×IoT・生成AIの実践</h3>
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        Raspberry Piや各種センサーを使って、土壌やビニールハウスの環境を計測するIoTシステムを生徒自ら組み立てて構築します。また、AI技術を用いた作物の収穫時期・病害予測など、最先端のデータサイエンスを学びます。
+                    </p>
+                </div>
+
+                <!-- 特色2 -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
+                    <div class="w-14 h-14 rounded-2xl bg-sky-500 text-white flex items-center justify-center mb-6 shadow-md shadow-sky-500/20">
+                        <i data-lucide="droplet" class="w-7 h-7"></i>
+                    </div>
+                    <span class="text-xs font-bold text-sky-500 tracking-wide uppercase">Nature × Science</span>
+                    <h3 class="text-xl font-bold text-slate-900 mt-2 mb-3">名水「うちぬき」との共生</h3>
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        西条市が世界に誇る自噴水「うちぬき」の恵みを活かし、水質の保全活動や環境科学的な分析を体験。美しい天然水を利用した独自のスマート水耕栽培システムなど、地域資源の価値を最大化する実証実験を行っています。
+                    </p>
+                </div>
+
+                <!-- 特色3 -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center mb-6 shadow-md shadow-amber-500/20">
+                        <i data-lucide="line-chart" class="w-7 h-7"></i>
+                    </div>
+                    <span class="text-xs font-bold text-amber-500 tracking-wide uppercase">Career × Skill</span>
+                    <h3 class="text-xl font-bold text-slate-900 mt-2 mb-3">多様な進路を開く実力</h3>
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        スマート農業で身に付く「ITスキル」「課題解決能力」「データ分析力」は一般企業からも大注目。農業・食品系分野はもちろん、情報・IT企業への就職や、国公立大学・農業系大学への推薦入学など、幅広いキャリアへの切符を手に入れられます。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 中学生向けインタラクティブコンテンツ：スマート農業適性診断 -->
+    <section id="diagnostic" class="py-20 bg-slate-900 text-white relative overflow-hidden" 
+             x-data="{ 
+                step: 0, 
+                answers: [], 
+                questions: [
+                    {
+                        text: 'もし自由研究をするなら、何を選びたい？',
+                        options: [
+                            { text: 'スマートフォンのアプリ開発やプログラミング！', score: 'it' },
+                            { text: '名水「うちぬき」の水質を徹底調査！', score: 'science' },
+                            { text: '自分で開発した新しいフルーツやお菓子づくり！', score: 'food' }
+                        ]
+                    },
+                    {
+                        text: '将来の仕事で大事にしたいことは何？',
+                        options: [
+                            { text: 'AIや最新テクノロジーの最先端に触れていたい', score: 'it' },
+                            { text: '地元の環境や自然を守りながら、地域に貢献したい', score: 'science' },
+                            { text: 'みんなが「美味しい！」と喜ぶ商品やアイデアを生み出したい', score: 'food' }
+                        ]
+                    },
+                    {
+                        text: 'あなたの強みに一番近いものは？',
+                        options: [
+                            { text: 'パソコンやガジェットの操作・仕組みを考えるのが好き', score: 'it' },
+                            { text: '理科の実験や、データを分析してまとめるのが好き', score: 'science' },
+                            { text: '人と協力したり、面白いアイデアを企画したりするのが好き', score: 'food' }
+                        ]
+                    }
+                ],
+                get result() {
+                    const counts = this.answers.reduce((acc, curr) => {
+                        acc[curr] = (acc[curr] || 0) + 1;
+                        return acc;
+                    }, {});
+                    let maxScore = 0;
+                    let winner = 'it';
+                    for (const key in counts) {
+                        if (counts[key] > maxScore) {
+                            maxScore = counts[key];
+                            winner = key;
+                        }
+                    }
+                    return winner;
+                },
+                selectOption(score) {
+                    this.answers.push(score);
+                    if (this.step < this.questions.length - 1) {
+                        this.step++;
+                    } else {
+                        this.step = 'result';
+                    }
+                },
+                reset() {
+                    this.step = 0;
+                    this.answers = [];
+                }
+             }">
+        <!-- 背景装飾 -->
+        <div class="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px] opacity-10"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
+            <div class="text-center space-y-4 mb-12">
+                <span class="text-xs font-extrabold tracking-widest text-brand-green bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full">30秒でわかる！</span>
+                <h2 class="text-2xl sm:text-4xl font-black">西農スマートアグリ適性診断</h2>
+                <p class="text-slate-400 text-sm sm:text-base">簡単な質問に答えて、あなたにぴったりのスマート農業タイプを診断しよう！</p>
+            </div>
+
+            <!-- 診断画面 -->
+            <div class="glass-card-dark rounded-3xl p-6 sm:p-10 max-w-2xl mx-auto shadow-2xl border border-slate-800">
+                
+                <!-- スタート画面 (step == 0 & answersなし) -->
+                <div x-show="step === 0 && answers.length === 0" class="text-center space-y-6">
+                    <div class="w-16 h-16 rounded-2xl bg-brand-green/10 border border-brand-green/30 flex items-center justify-center text-brand-green mx-auto animate-pulse">
+                        <i data-lucide="gamepad-2" class="w-8 h-8"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-lg sm:text-xl font-bold">あなたのアグリ適性をチェック！</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            「農業なんて興味ない…」と思っているあなたも、意外なスマートアグリ適性が見つかるかも！？
+                        </p>
+                    </div>
+                    <button @click="step = 0" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl gradient-bg text-white font-bold hover:shadow-lg hover:shadow-brand-green/20 transition-all">
+                        診断をスタートする
+                        <i data-lucide="play" class="w-4 h-4 ml-2 fill-current"></i>
+                    </button>
+                </div>
+
+                <!-- 質問回答中 -->
+                <template x-for="(q, index) in questions">
+                    <div x-show="step === index" class="space-y-6" x-transition:enter="transition ease-out duration-300">
+                        <!-- 進行状況 -->
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span class="font-mono">QUESTION <span x-text="index + 1"></span> of 3</span>
+                            <div class="flex space-x-1">
+                                <span class="w-6 h-1.5 rounded-full" :class="index >= 0 ? 'bg-brand-green' : 'bg-slate-700'"></span>
+                                <span class="w-6 h-1.5 rounded-full" :class="index >= 1 ? 'bg-brand-green' : 'bg-slate-700'"></span>
+                                <span class="w-6 h-1.5 rounded-full" :class="index >= 2 ? 'bg-brand-green' : 'bg-slate-700'"></span>
+                            </div>
+                        </div>
+                        
+                        <!-- 質問タイトル -->
+                        <h3 class="text-lg sm:text-xl font-bold text-white leading-relaxed" x-text="q.text"></h3>
+                        
+                        <!-- 選択肢 -->
+                        <div class="space-y-3 pt-2">
+                            <template x-for="opt in q.options">
+                                <button @click="selectOption(opt.score)" class="w-full text-left p-4 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-brand-green text-slate-200 hover:text-white font-medium text-sm sm:text-base transition-all flex items-center justify-between group">
+                                    <span x-text="opt.text"></span>
+                                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-500 group-hover:text-brand-green transition-colors"></i>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- 診断結果表示 -->
+                <div x-show="step === 'result'" class="space-y-6 text-center" x-transition:enter="transition ease-out duration-500">
+                    <span class="text-xs font-bold uppercase tracking-widest text-brand-green bg-emerald-500/20 border border-emerald-500/40 px-3 py-1 rounded-full">診断結果</span>
+                    
+                    <!-- タイプ1: スマートアグリ・エンジニア -->
+                    <div x-show="result === 'it'" class="space-y-4">
+                        <div class="w-16 h-16 rounded-2xl bg-brand-green/10 border border-brand-green/30 flex items-center justify-center text-brand-green mx-auto">
+                            <i data-lucide="terminal" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-brand-green">スマートアグリ・エンジニアタイプ</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed max-w-md mx-auto">
+                            農業のデジタル化を牽引する、未来のITスペシャリスト適性が抜群です！Raspberry PiなどのIoTデバイス工作や、生成AIでのデータ分析、スマート農業ロボットのプログラミングに強い興味・才能を持っています。
+                        </p>
+                    </div>
+
+                    <!-- タイプ2: グリーンバイオ・サイエンティスト -->
+                    <div x-show="result === 'science'" class="space-y-4">
+                        <div class="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 mx-auto">
+                            <i data-lucide="microscope" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-sky-400">グリーンバイオ・サイエンティストタイプ</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed max-w-md mx-auto">
+                            西条名水「うちぬき」など、地域の自然環境を守り活かす、科学者適性がきわめて高いです！水耕栽培の最適化やバイオテクノロジー、SDGsを意識したサステナブルな農業システム開発に関わることで大きな力を発揮します。
+                        </p>
+                    </div>
+
+                    <!-- タイプ3: スマートフード・イノベーター -->
+                    <div x-show="result === 'food'" class="space-y-4">
+                        <div class="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto">
+                            <i data-lucide="lightbulb" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-amber-400">スマートフード・イノベータータイプ</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed max-w-md mx-auto">
+                            農業の収穫物を活かし、新しい商品アイデアやビジネス、フードテックを生み出すプロデュース適性があります！SNSマーケティングやブランディングを学びながら、愛媛が誇る特産物の新しい価値を世界に届けるクリエイターになれます。
+                        </p>
+                    </div>
+
+                    <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row gap-3 justify-center">
+                        <button @click="reset()" class="px-6 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:text-white hover:border-slate-500 text-sm font-bold transition-all">
+                            もう一度診断する
+                        </button>
+                        <a href="#cta" class="px-6 py-2.5 rounded-xl gradient-bg text-white text-sm font-bold hover:shadow-lg hover:shadow-brand-green/20 transition-all flex items-center justify-center">
+                            オープンキャンパスで体験する
+                            <i data-lucide="arrow-right" class="w-4 h-4 ml-1.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. カリキュラム・キャンパスライフ -->
+    <section id="curriculum" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center space-y-4 mb-16">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-brand-green bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">西農の学び方</span>
+                <h2 class="text-2xl sm:text-4xl font-black text-slate-900">スマート農業を身につけるカリキュラム</h2>
+                <p class="text-sm sm:text-base text-slate-500">西農では、座学だけでなく「体験」「開発」「分析」の一連のサイクルを仲間と一緒に手を動かして学びます。</p>
+            </div>
+
+            <!-- タブ切り替えコンポーネント (Alpine.jsで連動) -->
+            <div class="max-w-5xl mx-auto space-y-8">
+                <!-- タブボタン -->
+                <div class="flex border-b border-slate-200">
+                    <button @click="currentTab = 'it'" :class="currentTab === 'it' ? 'border-brand-green text-brand-green border-b-2 font-black' : 'border-transparent text-slate-500 hover:text-slate-700 font-semibold'" class="flex-1 py-4 text-center text-sm sm:text-base transition-all">
+                        ① 農業×IT（データ解析・IoT）
+                    </button>
+                    <button @click="currentTab = 'field'" :class="currentTab === 'field' ? 'border-brand-green text-brand-green border-b-2 font-black' : 'border-transparent text-slate-500 hover:text-slate-700 font-semibold'" class="flex-1 py-4 text-center text-sm sm:text-base transition-all">
+                        ② 西条名水スマート実習
+                    </button>
+                    <button @click="currentTab = 'career'" :class="currentTab === 'career' ? 'border-brand-green text-brand-green border-b-2 font-black' : 'border-transparent text-slate-500 hover:text-slate-700 font-semibold'" class="flex-1 py-4 text-center text-sm sm:text-base transition-all">
+                        ③ 実践キャリア（多様な進路）
+                    </button>
+                </div>
+
+                <!-- タブコンテンツ 1: 農業×IT -->
+                <div x-show="currentTab === 'it'" class="grid md:grid-cols-2 gap-8 items-center" x-cloak>
+                    <div class="space-y-4 sm:space-y-6">
+                        <div class="inline-flex items-center space-x-2 text-brand-green font-bold text-sm bg-emerald-50 px-3 py-1 rounded-lg">
+                            <i data-lucide="cpu" class="w-4 h-4"></i>
+                            <span>最先端データサイエンス</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-slate-900">Raspberry Piでの電子工作とPythonによるデータ管理</h3>
+                        <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                            中学生が驚くのは、農業高校なのに「キーボードをたたく時間」が本格的であること。
+                            西農では自社開発のIoTデバイスを温室に設置し、土壌湿度や気温、CO2濃度などをリアルタイムで測定します。プログラミング言語Pythonを使ったデータ分析や、生成AIにハウス管理のアドバイスを求めるスマート農業プロトタイプの実装を行います。
+                        </p>
+                        <div class="space-y-2 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <span class="text-xs font-bold text-slate-400 block">学べる資格・技術：</span>
+                            <span class="inline-block bg-slate-200 text-slate-700 text-xs px-2.5 py-1 rounded-md font-bold mr-1.5 mb-1.5">Pythonプログラミング</span>
+                            <span class="inline-block bg-slate-200 text-slate-700 text-xs px-2.5 py-1 rounded-md font-bold mr-1.5 mb-1.5">IoTシステム基礎</span>
+                            <span class="inline-block bg-slate-200 text-slate-700 text-xs px-2.5 py-1 rounded-md font-bold mr-1.5 mb-1.5">ITパスポート</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-emerald-500 to-emerald-100 aspect-video rounded-2xl flex items-center justify-center p-1 relative overflow-hidden group shadow-lg">
+                        <div class="w-full h-full bg-slate-950 rounded-[14px] p-6 flex flex-col justify-between font-mono text-emerald-400 text-xs overflow-auto">
+                            <div>
+                                <span class="text-slate-500">// Raspberry Piセンサーからデータを取得</span><br>
+                                <span class="text-pink-400">import</span> time<br>
+                                <span class="text-pink-400">import</span> saino_iot_sensor <span class="text-pink-400">as</span> sensor<br>
+                                <br>
+                                <span class="text-pink-400">while</span> <span class="text-cyan-400">True</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;moisture = sensor.get_soil_moisture()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;temp = sensor.get_temperature()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-pink-400">if</span> moisture &lt; <span class="text-amber-400">60</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sensor.trigger_auto_watering(<span class="text-cyan-400">True</span>)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(<span class="text-amber-400">"【AI警報】土壌水分低下。自動給水開始。"</span>)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;time.sleep(<span class="text-amber-400">600</span>)
+                            </div>
+                            <div class="text-slate-500 text-[10px] border-t border-slate-800 pt-2 flex justify-between">
+                                <span>saino_green_house.py</span>
+                                <span class="text-brand-green">RUNNING...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- タブコンテンツ 2: 西条名水スマート実習 -->
+                <div x-show="currentTab === 'field'" class="grid md:grid-cols-2 gap-8 items-center" x-cloak>
+                    <div class="space-y-4 sm:space-y-6">
+                        <div class="inline-flex items-center space-x-2 text-sky-500 font-bold text-sm bg-sky-50 px-3 py-1 rounded-lg">
+                            <i data-lucide="droplet" class="w-4 h-4"></i>
+                            <span>名水の恵みをテクノロジーで守る</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-slate-900">「うちぬき」を活用した水耕栽培・アクアポニックス</h3>
+                        <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                            日本一の名水「うちぬき」が自噴する西条。この独自の強みを活かした先進的水耕栽培システムや、魚の養殖と植物の栽培を同時に行うサステナブルな「アクアポニックス」を学びます。
+                            自然の恵みと科学テクノロジーの融合を肌で感じ、愛媛・西条ならではのサステナブルアグリを実習を通じて習得します。
+                        </p>
+                        <ul class="space-y-2.5 text-slate-600 text-sm">
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="w-4.5 h-4.5 text-sky-500 mr-2"></i>うちぬき名水の水温・pH自動モニタリング</li>
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="w-4.5 h-4.5 text-sky-500 mr-2"></i>魚とイチゴの循環共生（アクアポニックスシステム）</li>
+                            <li class="flex items-center"><i data-lucide="check-circle-2" class="w-4.5 h-4.5 text-sky-500 mr-2"></i>地域の河川や水源を守るフィールドワーク研究</li>
+                        </ul>
+                    </div>
+                    <!-- ビジュアルカード -->
+                    <div class="bg-gradient-to-br from-sky-400 to-sky-100 aspect-video rounded-2xl flex items-center justify-center p-6 relative overflow-hidden shadow-lg">
+                        <div class="absolute inset-0 bg-slate-900/10"></div>
+                        <div class="bg-white/95 backdrop-blur border border-white/20 p-5 rounded-xl space-y-3 shadow-md max-w-sm relative z-10">
+                            <div class="flex items-center space-x-2 text-sky-600">
+                                <i data-lucide="waves" class="w-5 h-5"></i>
+                                <span class="font-extrabold text-sm tracking-wide">西農アクアポニックス監視</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-center">
+                                <div class="bg-sky-50 p-2.5 rounded-lg border border-sky-100/50">
+                                    <span class="text-[10px] text-slate-500 block">名水 pH</span>
+                                    <span class="text-lg font-black text-sky-700">7.2 <span class="text-xs font-normal">正常</span></span>
+                                </div>
+                                <div class="bg-sky-50 p-2.5 rounded-lg border border-sky-100/50">
+                                    <span class="text-[10px] text-slate-500 block">名水水温</span>
+                                    <span class="text-lg font-black text-sky-700">14.5℃ <span class="text-xs font-normal">正常</span></span>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-500 leading-relaxed font-mono">「うちぬき自噴水温を安定監視中。アクアポニックス用ティラピアの給餌システムをONに設定。」</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- タブコンテンツ 3: 実践キャリア -->
+                <div x-show="currentTab === 'career'" class="grid md:grid-cols-2 gap-8 items-center" x-cloak>
+                    <div class="space-y-4 sm:space-y-6">
+                        <div class="inline-flex items-center space-x-2 text-amber-500 font-bold text-sm bg-amber-50 px-3 py-1 rounded-lg">
+                            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                            <span>進学から就職まで万全のサポート</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-slate-900">「自分で稼ぐ力」と「課題解決のスキル」で進路開拓</h3>
+                        <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                            スマート農業を学んだ西農生は、あらゆる進路から選ばれる最強のスキルを身につけます。
+                            地元の自治体や企業と連携して商品開発をするなど、「起業家精神（アントレプレナーシップ）」も学びます。
+                        </p>
+                        
+                        <!-- 進路グラフ・実績 -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <span class="text-xs font-bold text-slate-400 block mb-1">進路内訳（過去5年平均）</span>
+                                <div class="space-y-1.5 text-xs text-slate-600">
+                                    <div class="flex justify-between"><span>大学・短大・専門進学</span> <span class="font-bold text-slate-800">55%</span></div>
+                                    <div class="flex justify-between"><span>公務員・優良企業就職</span> <span class="font-bold text-slate-800">45%</span></div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <span class="text-xs font-bold text-slate-400 block mb-1">主な進学・就職先</span>
+                                <span class="text-xs font-bold text-slate-800 block leading-relaxed">愛媛大学、東京農業大学、西条市役所、地元大手食品メーカー、IT系開発会社など</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 進路・未来のキャリア画像風ビジュアル -->
+                    <div class="bg-gradient-to-br from-amber-400 to-amber-100 aspect-video rounded-2xl flex items-center justify-center p-6 relative overflow-hidden shadow-lg">
+                        <div class="absolute inset-0 bg-slate-900/10"></div>
+                        <div class="bg-white/95 backdrop-blur p-5 rounded-xl space-y-4 shadow-md max-w-sm relative z-10 w-full">
+                            <h4 class="font-bold text-slate-800 text-sm border-b border-slate-100 pb-2 flex items-center">
+                                <i data-lucide="award" class="w-4 h-4 text-amber-500 mr-2"></i>
+                                西農卒業生の「未来の姿」
+                            </h4>
+                            <div class="space-y-3 text-xs">
+                                <div class="flex items-start space-x-2.5">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 font-bold">1</div>
+                                    <div>
+                                        <p class="font-bold text-slate-800">大学進学後、アグリベンチャーを起業</p>
+                                        <p class="text-slate-500">西農で学んだIoT技術をベースに、革新的な栽培管理アプリを開発・販売する社長に！</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-2.5">
+                                    <div class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center shrink-0 font-bold">2</div>
+                                    <div>
+                                        <p class="font-bold text-slate-800">地元優良企業のスマート農業推進担当</p>
+                                        <p class="text-slate-500">最新ドローンや自動給水システムを導入し、地域全体の産業活性化を推進！</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. よくある質問 (保護者・生徒向けFAQ) -->
+    <section class="py-20 bg-slate-50 relative">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center space-y-4 mb-16">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-brand-green bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">保護者の方も安心</span>
+                <h2 class="text-2xl sm:text-4xl font-black text-slate-900">よくある質問と回答</h2>
+                <p class="text-slate-500 text-sm sm:text-base">農業高校の進路やカリキュラムに関する疑問を解消します。</p>
+            </div>
+
+            <div class="space-y-4" x-data="{ activeFaq: null }">
+                <!-- FAQ 1 -->
+                <div class="bg-white rounded-2xl border border-slate-200/60 overflow-hidden transition-all">
+                    <button @click="activeFaq = activeFaq === 1 ? null : 1" class="w-full text-left p-6 font-bold text-slate-800 hover:text-brand-green flex items-center justify-between text-base sm:text-lg focus:outline-none">
+                        <span>Q1. パソコンやプログラミングを触ったことがないのですが、ついていけますか？</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300" :class="activeFaq === 1 ? 'rotate-180 text-brand-green' : 'text-slate-400'"></i>
+                    </button>
+                    <div x-show="activeFaq === 1" x-collapse class="px-6 pb-6 text-sm sm:text-base text-slate-600 border-t border-slate-100 pt-4" x-cloak>
+                        まったく心配いりません！入学するほとんどの生徒が、専門的なプログラミングや電子工作は未経験です。西農では、キーボードのブラインドタッチ練習から、IoTの基礎、簡単なコード作成まで、少人数かつ専門教員が丁寧にゼロからサポートします。
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="bg-white rounded-2xl border border-slate-200/60 overflow-hidden transition-all">
+                    <button @click="activeFaq = activeFaq === 2 ? null : 2" class="w-full text-left p-6 font-bold text-slate-800 hover:text-brand-green flex items-center justify-between text-base sm:text-lg focus:outline-none">
+                        <span>Q2. 普通科の高校と比べて、卒業後の進路（進学など）は不利になりませんか？</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300" :class="activeFaq === 2 ? 'rotate-180 text-brand-green' : 'text-slate-400'"></i>
+                    </button>
+                    <div x-show="activeFaq === 2" x-collapse class="px-6 pb-6 text-sm sm:text-base text-slate-600 border-t border-slate-100 pt-4" x-cloak>
+                        むしろ、スマートアグリの専門知識と実践力があるため、進路選択肢は非常に多様で有利です！愛媛大学をはじめとする国公立大学への「総合型選抜（推薦入試）」や、農業系・理系私立大学への指定校枠が充実しています。また、ITや地域創生といった独自の強みをアピールできるため、就職実績も県内トップクラスです。
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="bg-white rounded-2xl border border-slate-200/60 overflow-hidden transition-all">
+                    <button @click="activeFaq = activeFaq === 3 ? null : 3" class="w-full text-left p-6 font-bold text-slate-800 hover:text-brand-green flex items-center justify-between text-base sm:text-lg focus:outline-none">
+                        <span>Q3. 自宅から通えるか不安です。西条市外からの入学は可能ですか？</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300" :class="activeFaq === 3 ? 'rotate-180 text-brand-green' : 'text-slate-400'"></i>
+                    </button>
+                    <div x-show="activeFaq === 3" x-collapse class="px-6 pb-6 text-sm sm:text-base text-slate-600 border-t border-slate-100 pt-4" x-cloak>
+                        はい、可能です！西条市内はもちろん、新居浜市、今治市、あるいは中予地方など、近隣の市町からJRなどを利用して毎日元気に通学している生徒が多数います。学校見学やオープンキャンパス時に通学路や交通手段について個別相談も可能です。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. コールトゥアクション（CTA：オープンキャンパス予約） -->
+    <section id="cta" class="py-20 relative bg-slate-900 text-white overflow-hidden">
+        <!-- 背景ビジュアル -->
+        <div class="absolute inset-0 bg-slate-950 opacity-40"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl border border-slate-800 p-8 sm:p-12 shadow-2xl">
+                
+                <!-- 送信完了前のフォーム画面 -->
+                <div x-show="!formSubmitted" class="space-y-8">
+                    <div class="text-center space-y-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full bg-brand-green/20 text-brand-green font-bold text-xs uppercase tracking-wider">
+                            <i data-lucide="calendar-heart" class="w-4 h-4 mr-1.5"></i>
+                            2026年度 オープンキャンパス開催！
+                        </span>
+                        <h2 class="text-2xl sm:text-4xl font-black text-white">スマート農業をその目で確かめよう</h2>
+                        <p class="text-sm sm:text-base text-slate-400 max-w-xl mx-auto">
+                            Raspberry Piを使った自動給水ロボットのプログラミングや、うちぬきスマート水耕栽培の収穫体験ができる体験入学に、親子で参加してみませんか？
+                        </p>
+                    </div>
+
+                    <!-- イベント日時スケジュール -->
+                    <div class="grid sm:grid-cols-2 gap-4 max-w-xl mx-auto">
+                        <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700 flex items-start space-x-3">
+                            <i data-lucide="calendar" class="w-5 h-5 text-brand-green mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">第1回：アグリテック体験</h4>
+                                <p class="text-xs text-slate-400">7月25日（土）9:30〜12:30</p>
+                                <p class="text-[10px] text-brand-green font-bold mt-1">「Raspberry Piで散水システムを動かそう」</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700 flex items-start space-x-3">
+                            <i data-lucide="calendar" class="w-5 h-5 text-brand-green mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">第2回：名水水耕栽培収穫</h4>
+                                <p class="text-xs text-slate-400">8月22日（土）9:30〜12:30</p>
+                                <p class="text-[10px] text-brand-green font-bold mt-1">「アクアポニックスと夏野菜の最先端管理」</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 入力フォーム -->
+                    <form @submit.prevent="formSubmitted = true" class="max-w-xl mx-auto space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5" for="name">お名前（生徒様）</label>
+                                <input type="text" id="name" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-brand-green text-sm" placeholder="西農 太郎">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5" for="school">在籍中学校</label>
+                                <input type="text" id="school" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-brand-green text-sm" placeholder="西条第一中学校">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5" for="contact">ご連絡先（メールアドレスまたは電話番号）</label>
+                            <input type="text" id="contact" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-brand-green text-sm" placeholder="example@email.com / 090-XXXX-XXXX">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5" for="event">希望する体験日程</label>
+                            <select id="event" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-green text-sm">
+                                <option value="1">第1回：7月25日（土）アグリテック体験</option>
+                                <option value="2">第2回：8月22日（土）名水水耕栽培収穫</option>
+                                <option value="both">両日とも参加希望</option>
+                            </select>
+                        </div>
+
+                        <div class="pt-4">
+                            <button type="submit" class="w-full inline-flex items-center justify-center px-8 py-4 rounded-xl gradient-bg text-white font-black hover:shadow-xl hover:shadow-brand-green/30 transition-all hover:-translate-y-0.5">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                                この内容でオープンキャンパスに仮予約する
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 送信完了画面 -->
+                <div x-show="formSubmitted" class="text-center space-y-6 py-8" x-transition:enter="transition ease-out duration-500" x-cloak>
+                    <div class="w-16 h-16 rounded-full bg-brand-green/10 border-2 border-brand-green flex items-center justify-center text-brand-green mx-auto">
+                        <i data-lucide="party-popper" class="w-8 h-8"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-black text-white">体験入学の仮予約、ありがとうございます！</h3>
+                        <p class="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                            ご入力いただいた連絡先へ、2営業日以内に学校から受付完了メールをお送りします。<br>
+                            当日、西農のスマートビニールハウスでお会いできるのを楽しみにしています！
+                        </p>
+                    </div>
+                    <button @click="formSubmitted = false" class="px-6 py-2 rounded-xl border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 text-sm font-semibold transition-all">
+                        フォームに戻る
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-slate-900 pb-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-white font-bold">西</div>
+                    <span class="font-extrabold text-white text-base">愛媛県立西条農業高等学校（西農）</span>
+                </div>
+                <div class="flex space-x-6 text-sm">
+                    <a href="https://saijo-ah.esnet.ed.jp/" target="_blank" class="hover:text-white transition-colors">学校公式HPへ</a>
+                    <a href="#vision" class="hover:text-white transition-colors">ビジョン</a>
+                    <a href="#strengths" class="hover:text-white transition-colors">強み・特色</a>
+                    <a href="#diagnostic" class="hover:text-white transition-colors">適性診断</a>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-between items-center text-xs text-slate-600 gap-4">
+                <span>※本ページは西条農業高校の魅力を伝えるために作成されたデモンストレーションLPです。</span>
+                <span>&copy; 2026 Saijo Agricultural High School. All Rights Reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- モバイル（スマホ）用 画面下部固定追従CTAボタン (PCでは非表示) -->
+    <div class="fixed bottom-4 inset-x-4 z-40 sm:hidden">
+        <a href="#cta" class="w-full inline-flex items-center justify-center py-3.5 px-6 rounded-2xl gradient-bg text-white font-black text-base shadow-2xl shadow-brand-green/40 hover:-translate-y-0.5 active:scale-95 transition-all">
+            <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i>
+            オープンキャンパス予約はこちら
+        </a>
+    </div>
+
+    <script>
+        // Lucide SVG アイコンのレンダリングを初期化
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>
